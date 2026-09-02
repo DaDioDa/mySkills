@@ -71,20 +71,19 @@ commit 完跑 `git log -1 --stat` 回報結果。使用者明講之前不要 pus
 
 ## 訊息格式
 
-`type(scope): 中文摘要`，空行，中文條列說明。
+`type(scope): 中文標題`，空行，一段**摘要**。
 
 - type 用 Conventional Commits：`feat` `fix` `refactor` `perf` `docs` `test` `chore` `build` `ci`
 - scope 填模組或目錄名，判斷不出來就整個省略
-- 摘要一行講完這個 commit 的意圖，祈使語氣，句尾不加句號
-- 內文條列講 **why**：為什麼要改、解掉什麼問題、有什麼取捨。diff 讀得出來的 what 不必重寫
-- breaking change 在內文另起 `BREAKING CHANGE:` 段落
+- 標題一行講完這個 commit 的意圖，祈使語氣，句尾不加句號
+- 內文寫成一段連貫散文，讀起來像論文摘要：先講原本的問題，再講這次的做法，最後講效果或取捨
+- 內文控制在 **100 個中文字以內**。寫完數過再送出，超過就砍掉 diff 讀得出來的 what，只留 why
+- breaking change 在摘要後另起 `BREAKING CHANGE:` 段落，不計入這 100 字
 
 ```
 feat(auth): 加入 refresh token 輪替機制
 
-- session 上記錄輪替次數，讓重放的 token 可被辨識
-- 拒絕已使用過的 refresh token，縮小憑證外洩後的可用視窗
-- 補上 replay 攻擊的回歸測試
+原本的 refresh token 可無限重用，一旦外洩就等同長期憑證。改為輪替機制，session 記錄輪替次數，用過的 token 一律拒絕，把外洩後的可用視窗壓到單次，並補上 replay 攻擊的回歸測試。
 ```
 
 commit trailer 沿用 harness 既有規則，這裡不另外指定。
