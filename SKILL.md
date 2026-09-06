@@ -1,11 +1,13 @@
 ---
 name: commit
-description: Stage and commit the working tree as atomic commits, with a Conventional Commits message written in 中文. Use when the user asks to commit, 提交, or 存檔 the current changes.
+description: Stage and commit the working tree as atomic commits, with a Conventional Commits message written in 中文. Trigger proactively whenever the working tree is dirty and a unit of work has just finished — no need to wait for the user to ask; an explicit commit / 提交 / 存檔 request also fires it.
 ---
 
 # Commit
 
 把這次協作的成果整理成 **atomic** commit：一個 commit 只承載一個意圖，訊息說清楚 **why**，而不是複述 diff 的 what。
+
+使用者沒開口也可以起這個 skill：看到一個工作段落收尾、`git status` 是髒的，就主動走這套流程。第 4 步一定停下來等使用者確認提案，所以主動觸發永遠不會擅自 commit。
 
 依序執行下面五步。
 
