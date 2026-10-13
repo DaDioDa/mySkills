@@ -1,0 +1,56 @@
+{
+  "name": "pi-statusline",
+  "version": "0.0.2",
+  "description": "Claude Code-compatible command-driven statusline extension for the Pi coding agent",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-coding-agent",
+    "extension",
+    "statusline",
+    "footer",
+    "widget",
+    "claude-code",
+    "claude-code-statusline"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsingjui/pi-statusline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hsingjui/pi-statusline/issues"
+  },
+  "homepage": "https://github.com/hsingjui/pi-statusline#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "README.zh-CN.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2"
+  },
+  "scripts": {
+    "check": "node --eval \"console.log('No build step required; pi loads TypeScript via jiti.')\"",
+    "test": "node --experimental-strip-types --import ./test/register-ts-loader.mjs --test --test-concurrency=1 test/*.test.ts",
+    "test:perf": "node --experimental-strip-types --import ./test/register-ts-loader.mjs --test --test-concurrency=1 test/performance.test.ts"
+  }
+}
