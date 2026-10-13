@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "run_id": null,
+  "status": "initializing",
+  "writers_stopped": false,
+  "repository_root": null,
+  "artifact_directory": null,
+  "baseline_sha": null,
+  "integration_branch": null,
+  "integration_worktree": null,
+  "integration_head_sha": null,
+  "last_verified_head_sha": null,
+  "spec": { "source_path": null, "snapshot_path": null, "content_hash": null },
+  "worker_configuration": { "kind": null, "provider_model": null, "effort": "low" },
+  "role_overrides": {},
+  "test_contract": {
+    "confirmed_seams": [],
+    "confirmation_source": null,
+    "tdd_skill_path": null,
+    "shared_test_location": null,
+    "related": [],
+    "regression": [],
+    "full": []
+  },
+  "limits": { "max_active_workers": 2, "max_full_reviews": 1, "wait_timeout_ms": 120000 },
+  "tickets": [],
+  "dispatches": [],
+  "review": { "head_sha": null, "status": "not-started", "report_paths": [], "findings": [], "fix_shas": [] },
+  "human_validation": { "head_sha": null, "decision": null, "accepted_head_sha": null, "response_reference": null },
+  "blockers": [],
+  "created_resources": []
+}
