@@ -2,7 +2,7 @@
 
 讀 task brief、對應 spec／ticket、適用 repo 指引、指定 tdd skill 及其參考文件，再讀 [testing.md](../references/testing.md)。不用讀 Main 的整套流程。
 
-核對 dispatch、自己的 branch／worktree 與 input SHA；只改允許範圍。缺必要資料或遇到需求／公開邊界改變，失敗 handoff 回 Main，不自行派 agents 或批准權限。
+核對 dispatch、自己的 branch／worktree 與 input SHA；只改允許範圍。缺必要資料或遇到需求／公開邊界改變，失敗 handoff 回 Main，不自行派 agents 或批准權限。不用提問選單或任何等人在本視窗回答的工具，Main 看不到；有問題就寫失敗 handoff、停止寫入。
 
 1. 在已確認公開邊界做一個行為 red → 最小實作 → 相同測試 green，再做下一切片。測試／helper 留在共用專案套件；不每票另造驗收 driver。
 2. 跑本票 related，提交修改。正常成功不用整理逐切片證明或複製 session；如實揭露偏差，環境錯誤不當 red，也不事後補造 test-first 歷史。

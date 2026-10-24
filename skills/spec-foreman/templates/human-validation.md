@@ -15,6 +15,7 @@
 - 唯一完整 review 的原 HEAD／結果:
 - 之後的 finding → fix commit／相關測試摘要:
 - 未解阻塞（必須無，或有使用者明確豁免）／advisory:
+- Main 從 blocking 降成 advisory 的 findings 與理由（沒有就寫無）:
 - 若有修正：明說「修正已通過測試，未再次 code review」。
 - 本 run 暫存目錄：...；接受後將刪除，只保留產品測試、commits／branches／worktrees。
 

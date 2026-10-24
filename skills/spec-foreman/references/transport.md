@@ -15,17 +15,46 @@
 
 同一票補同步／修復沿用現有 session，不再全套啟動檢查；重啟、身份／配置變動跡象才重新核對。跨票復用仍核對 live identity 與當前配置，但不重做每 run discovery 或 start。
 
+## Claude Code workers
+
+Claude Code 遇到未允許的命令會停下等人確認，Herdr 顯示 `blocked`；Pi 沒有這層確認。權限方式在 [startup](startup.md) 問使用者一次，記入 state `worker_configuration.permission_mode`：
+
+- `auto`（建議）：啟動加 `--permission-mode auto`。
+- 允許清單：用 `--allowedTools` 列出。清單必須逐字涵蓋 brief 與測試契約要求的命令寫法，包括導向 log 檔的形式與 `git -C`；派工前拿 brief 裡每條命令對一次。
+
+Worker `blocked` 時，讀畫面確認卡在哪個命令，立刻通知使用者並等待。不按 Esc 拒絕、不替使用者同意、不自行改權限設定。
+
+## 送文字給 agent
+
+`herdr agent prompt` 的文字只能放在命令列參數，shell 會先改寫它。Windows 實測（Git for Windows、Windows PowerShell 5.1）：
+
+- Git Bash 把開頭是 `/` 的參數改成 Windows 路徑：`/compact` 變成 `C:/Program Files/Git/compact`。
+- 雙引號內的 `$2`、`$VAR` 會被展開，未定義就變成空字串，不報錯。
+- Windows PowerShell 5.1 會刪掉參數裡的 `"`，不報錯。
+
+每次送 prompt：
+
+1. 用檔案寫入工具把完整 prompt 寫進本 run 的 `prompts/<dispatch-id>.md`。路徑寫完整字面值，不用 shell 變數、函式或位置參數組字串。
+2. 從 Git Bash 送出，只在這一行加 `MSYS_NO_PATHCONV=1`：
+
+   ```sh
+   MSYS_NO_PATHCONV=1 herdr agent prompt <pane-id-or-agent-name> "$(cat <prompt-file>)"
+   ```
+
+   其他命令不加，`--cwd /d/...` 這類路徑靠自動轉換。不用 Windows PowerShell 5.1 送 prompt。非 Windows 不需要 `MSYS_NO_PATHCONV=1`，同樣從檔案送。
+3. 每個 dispatch 送出後核對一次，不持續盯：從 session 紀錄讀它收到的完整文字，與檔案比對，不截斷；再確認它第一個讀的檔案就是 prompt 裡的 brief 絕對路徑。不一致就停下這個 worker，修正後重送，不讓它自己猜要讀哪份。
+
 ## 串行接票的 compact
 
-在前票整合、worker idle／停寫且新 input 已就緒後，使用 `herdr agent prompt` 對原 worker 送真正的 slash command。使用者已實測 Herdr → Pi 的以下方式可執行 compact：
+在前票整合、worker idle／停寫且新 input 已就緒後，使用 `herdr agent prompt` 對原 worker 送真正的 slash command。使用者已實測 Herdr → Pi 的以下方式可執行 compact；Git Bash 必須加 `MSYS_NO_PATHCONV=1`，否則 worker 收到的是 `C:/Program Files/Git/compact`：
 
 ```sh
-herdr agent prompt <pane-id-or-agent-name> "/compact"
+MSYS_NO_PATHCONV=1 herdr agent prompt <pane-id-or-agent-name> "/compact"
 ```
 
 Target 使用 dispatch 中的明確 pane ID 或唯一 live agent name，不依賴 UI focus；這裡只送 compact，不夾帶下一票任務。這是已確認的 Pi 通道，無需逐票重新探索；其他 agent kind 或版本／能力變動時才核實，不可用則回報 Main，不默默改成新 session。
 
-Pi 也支援 `/compact [instructions]`；需要摘要重點時，把短指示接在 `/compact` 後，一起放入同次 prompt 字串：前票已完成；保留公開介面與測試用法、已接受修正、限制及來源路徑；下一票以新 brief／當前 Git 為準。compact 縮減上下文但保留摘要／近期訊息，不是清空記憶，也不保證省 token。
+Pi 也支援 `/compact [instructions]`；需要摘要重點時，把短指示接在 `/compact` 後，依上節寫成檔案再送：前票已完成；保留公開介面與測試用法、已接受修正、限制及來源路徑；下一票以新 brief／當前 Git 為準。compact 縮減上下文但保留摘要／近期訊息，不是清空記憶，也不保證省 token。
 
 查同一 session 在本次操作後新增的成功 compaction entry（Pi 為 `type=compaction`），或同等可靠的原生成功事件，記錄來源指標；舊 entry、timeout、idle／done 不是成功。確認成功、身份／配置與 Git 未變，才送下一票；失敗／取消／結果不明先停留原 worker 回 Main 處理，不盲目重送 compact 或下一票。透過 event wait 回收，不輪詢完整 session。
 
@@ -40,6 +69,7 @@ Pi 也支援 `/compact [instructions]`；需要摘要重點時，把短指示接
 - `done`／`idle` 只代表可收輸入；正式短 result 或失敗 handoff、Git 版本及停止寫入才證明交件。
 - Timeout／stalled／連線錯誤不證明未送達。查 live state、結果與 Git，再等待或求援，不盲目重送。
 - 正常用 event wait；只有狀態邊界、錯誤才讀少量 terminal。Working 時用 visible，不大量回收 idle-only history。
+- Pi 的提問選單在 Herdr 顯示為 `working`，不是 `blocked`，wait 不會因此醒來。所以角色檔禁止 workers 用提問選單，問題一律走失敗 handoff。
 - 額度／provider 錯誤與 ticket 完成分開判斷；缺 result 不宣稱完成。
 - 更新簡短進度：哪些票執行中／已整合、正在驗證什麼；長等待時避免讓使用者猜是否卡住。
 

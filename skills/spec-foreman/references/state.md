@@ -6,7 +6,7 @@ Main 是 state 唯一寫入者，使用 UTF-8、temp file + 同目錄 rename 更
 
 透過 OS temporary-directory API 建立唯一 `spec-foreman-<random>/` run 目錄，不把流程檔寫進產品或 Git common directory。可用 `tempfile.mkdtemp(prefix="spec-foreman-")`，不要猜跨平台 temp 路徑。
 
-寫 `.owner.json`，包含 `run_id`、`repository_root`、`artifact_directory`，內容與 state 一致。目錄只放 spec 快照、briefs、短 results、failure handoffs、review、測試 logs 與本 run 自建 sessions。Git worktrees、產品測試、使用者資料放在此目錄之外。
+寫 `.owner.json`，包含 `run_id`、`repository_root`、`artifact_directory`，內容與 state 一致。目錄只放 spec 快照、briefs、送出的 prompts、短 results、failure handoffs、review、測試 logs 與本 run 自建 sessions。Git worktrees、產品測試、使用者資料放在此目錄之外。
 
 原生 CLI 支援獨立 session directory 時可指向本 run 的 sessions 子目錄；否則只記原 session 指標，不複製大型 JSONL，也不宣稱外部 session 會被清理。OS 可能清 temp；告知使用者這不是長期備份。
 
@@ -15,11 +15,11 @@ Main 是 state 唯一寫入者，使用 UTF-8、temp file + 同目錄 rename 更
 使用 [state.json](../templates/state.json)：
 
 - Run：ID、repo、artifact path、baseline、integration branch／worktree、candidate／last verified SHA、status、`writers_stopped`（全部 writers／測試程序停下後才 true）。
-- 共用配置：kind、provider/model、effort；只保存明確角色覆寫。
+- 共用配置：kind、provider/model、effort、Claude Code 的 `permission_mode`（使用者選定的 `auto` 或允許清單）；只保存明確角色覆寫。
 - 測試契約：已確認的邊界與來源、tdd 路徑、related／regression／full 的命令與 cwd。
 - Tickets：ID、快照中的來源位置、depends_on、shared_resources、status、dispatch ID、integrated SHA。
 - Dispatches：ID、ticket／role、brief／result path、pane／agent／session、branch／worktree、input／output SHA、requested／observed 配置與來源、writer stopped。串行接票的新 dispatch 加 `reuse_from_dispatch_id` 與本次成功的 `compaction_source` 指標（session／entry ID 或原生事件）；其餘 dispatch 省略。
-- Review：原 review HEAD、report、findings、fix SHAs；不保留多輪 ledger。
+- Review：原 review HEAD、report、findings（Main 降級的要附理由）、fix SHAs；不保留多輪 ledger。
 - Human：驗收 HEAD、明確決策與回覆來源；created_resources 是 cleanup ownership 的依據。
 
 只在狀態轉換更新；不把驗收條件、commands 或 logs 複製到每個欄位。Result 中已有細節就留路徑。`last_verified_head_sha` 與 candidate 不同時，不宣稱目前版本驗證通過。

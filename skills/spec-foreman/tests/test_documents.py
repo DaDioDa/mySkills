@@ -71,7 +71,7 @@ class DocumentTests(unittest.TestCase):
 
     def test_compact_success_required_before_next_ticket(self):
         text = (ROOT / "references/transport.md").read_text(encoding="utf-8")
-        for phrase in ('herdr agent prompt <pane-id-or-agent-name> "/compact"',
+        for phrase in ('MSYS_NO_PATHCONV=1 herdr agent prompt <pane-id-or-agent-name> "/compact"',
                        "不夾帶下一票任務", "真正的 slash command", "新增的成功 compaction entry",
                        "type=compaction", "才送下一票", "失敗／取消／結果不明",
                        "不在每票交件後關閉"):
@@ -82,6 +82,36 @@ class DocumentTests(unittest.TestCase):
                              "Start 全新 ticket session", "每張票用唯一 dispatch、獨立 worktree／branch"):
                 with self.subTest(document=document.name, phrase=obsolete):
                     self.assertNotIn(obsolete, content)
+
+    def test_prompt_delivery_and_claude_permissions(self):
+        text = (ROOT / "references/transport.md").read_text(encoding="utf-8")
+        for phrase in ('"$(cat <prompt-file>)"', "只在這一行加 `MSYS_NO_PATHCONV=1`",
+                       "不用 Windows PowerShell 5.1 送 prompt", "第一個讀的檔案",
+                       "--permission-mode auto", "立刻通知使用者並等待", "不按 Esc 拒絕",
+                       "顯示為 `working`"):
+            self.assertIn(phrase, text)
+        self.assertIn("權限方式", (ROOT / "references/startup.md").read_text(encoding="utf-8"))
+        state = json.loads((ROOT / "templates/state.json").read_text(encoding="utf-8"))
+        self.assertIn("permission_mode", state["worker_configuration"])
+
+    def test_workers_never_ask_in_pane(self):
+        for role in ("implementer", "fixer", "reviewer", "explorer"):
+            text = (ROOT / f"roles/{role}.md").read_text(encoding="utf-8")
+            with self.subTest(role=role):
+                self.assertIn("不用提問選單", text)
+
+    def test_blocking_defined_by_evidence_not_likelihood(self):
+        reviewer = (ROOT / "roles/reviewer.md").read_text(encoding="utf-8")
+        for phrase in ("Blocking 的定義", "都不能拿來降級", "驗收條件對照"):
+            self.assertIn(phrase, reviewer)
+        template = (ROOT / "templates/review.md").read_text(encoding="utf-8")
+        for phrase in ("## 驗收條件對照", "不符合的一定要有對應 blocking finding", "發生機率與影響"):
+            self.assertIn(phrase, template)
+        loop = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")
+        for phrase in ("不因機率低或影響小降級", "理由記入 state", "列在驗收包"):
+            self.assertIn(phrase, loop)
+        human = (ROOT / "templates/human-validation.md").read_text(encoding="utf-8")
+        self.assertIn("降成 advisory 的 findings 與理由", human)
 
     def test_no_automatic_post_fix_review(self):
         text = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")

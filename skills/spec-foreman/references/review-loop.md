@@ -10,7 +10,9 @@
 
 ## 只修阻塞問題
 
-Main 合併同根因 findings，區分需求錯誤／功能缺陷／安全／硬性標準與主觀建議。前者是 blocking，後者留給人類，不擴張重構。
+Main 合併同根因 findings。分類照 [reviewer](../roles/reviewer.md) 的 blocking 定義：有證據違反驗收條件、spec、ADR 或硬性規則就是 blocking，不因機率低或影響小降級；主觀建議留給人類，不擴張重構。收件時核對驗收條件對照：有缺漏，或「不符合」卻沒有 finding，請同一 reviewer 補齊。
+
+Reviewer 漏列的違反，Main 升為 blocking。Main 認為 reviewer 判錯（例如證據讀錯程式）時可以降成 advisory，但要把理由記入 state，並列在驗收包讓使用者看到。
 
 把有來源、具體位置或重現依據的 blocking findings 交 [fixer](../roles/fixer.md)。Main 可用現有 spec／測試澄清誤報；真正需求、風險豁免或權限分歧才問使用者，不為文字報告爭議另開仲裁 agent。
 

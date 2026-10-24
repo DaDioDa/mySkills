@@ -11,7 +11,7 @@
   "integration_head_sha": null,
   "last_verified_head_sha": null,
   "spec": { "source_path": null, "snapshot_path": null, "content_hash": null },
-  "worker_configuration": { "kind": null, "provider_model": null, "effort": "low" },
+  "worker_configuration": { "kind": null, "provider_model": null, "effort": "low", "permission_mode": null },
   "role_overrides": {},
   "test_contract": {
     "confirmed_seams": [],
