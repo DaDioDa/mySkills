@@ -8,6 +8,7 @@
 skills/
 ├── commit/          # Git 提交流程
 ├── cp-master/       # 高 CP 值選項調查
+├── how/             # 解釋程式碼架構與運作流程（源自 cursor/plugins pstack）
 ├── latex-slides/    # LaTeX 簡報製作
 ├── recall/          # 從 git 與 Claude Code／Codex／Pi 對話紀錄產出專案近況簡報（改寫自 cursor/plugins pstack）
 └── spec-foreman/    # 規格導向的多 agent TDD 與 review 流程
