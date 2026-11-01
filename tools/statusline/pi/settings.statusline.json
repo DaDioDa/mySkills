@@ -1,0 +1,8 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "node \"__PI_AGENT_DIR__/statusline-openai.mjs\"",
+    "timeoutMs": 10000,
+    "refreshIntervalMs": 1000
+  }
+}
