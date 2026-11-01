@@ -1,24 +1,26 @@
 ---
 name: commit
-description: Stage and commit the working tree as atomic commits, with a Conventional Commits message written in 中文. Trigger proactively whenever the working tree is dirty and a unit of work has just finished — no need to wait for the user to ask; an explicit commit / 提交 / 存檔 request also fires it.
+description: 將 working tree 整理成 atomic commits，並以中文撰寫 Conventional Commits 訊息。
+disable-model-invocation: true
 ---
 
 # Commit
 
 把這次協作的成果整理成 **atomic** commit：一個 commit 只承載一個意圖，訊息說清楚 **why**，而不是複述 diff 的 what。
 
-使用者沒開口也可以起這個 skill：看到一個工作段落收尾、`git status` 是髒的，就主動走這套流程。第 4 步一定停下來等使用者確認提案，所以主動觸發永遠不會擅自 commit。
-
-依序執行下面五步。
+只有使用者直接呼叫此 skill 時才執行。由主代理直接完成下面五步，不委派給 committer 或其他子代理。
 
 ## 1. 讀現況
 
 ```bash
 git status --short
+git status          # 確認沒有 rebase / merge 進行中
 git diff            # unstaged
 git diff --cached   # staged
 git log --oneline -10
 ```
+
+`git diff` 不含未追蹤檔案；另列出並讀取準備納入的未追蹤檔案。
 
 完成條件：working tree 裡**每一個**變更檔案，你都能說出它屬於哪個意圖。說不出來的檔案，就是第 4 步要問的對象。
 
@@ -48,28 +50,41 @@ git log --oneline -10
 
 把三件事一次列給使用者，然後**停下來**：
 
-1. 要 `git add` 的檔案清單，逐條列出實際路徑
+1. 要暫存的檔案清單，逐條列出實際路徑；同一檔案分屬多個 commit 時，列明各 commit 包含的區塊
 2. 刻意不 add 的檔案，以及理由
 3. commit message 草稿全文
 
 diff 含**多個不相關的意圖**時，改成提案多個 atomic commit，逐一列出各自的檔案與訊息，讓使用者決定要不要拆。
 
-第 2、3 步標記出的待確認項與 red flag，在這裡一併提問。使用者回覆前不要動 git。
+第 2、3 步標記出的待確認項與 red flag，在這裡一併提問。使用者回覆前只做唯讀檢查，不修改 working tree、index 或提交紀錄。
 
 ## 5. Commit
 
-```bash
-git add <逐一列出的路徑>
-git commit -F <訊息檔>
-```
+確認後先檢查 working tree 與 index 是否仍符合核准提案；沒有變動就直接執行，不重做提案。若出現未核准變更或既有 staging 與拆分計畫衝突，停下來確認，不擅自清空或重排使用者的 staging。
 
-訊息寫到 scratchpad 目錄再用 `-F` 傳入。中文加多行用 `-m` 串，在 PowerShell 與 bash 的引號規則不同，`-F` 兩邊都穩。
+### 暫存與提交
 
-`git add` 的路徑要跟第 4 步提案的清單逐字一致，用 `git add -A` 或 `git commit -am` 會把沒提案過的檔案一起帶進去。
+- 整檔屬於本次 commit：執行 `git add <逐一列出的路徑>`，路徑必須與核准清單逐字一致。禁止 `git add -A` 或 `git commit -am`。
+- 同檔分屬多個 commit：不要整檔 add，也不要為了拆分去改 working tree。從目前 index 版本建立只含本次核准區塊的目標內容，以程式產生 unified diff（例如 Python `difflib.unified_diff`，使用 `a/路徑`、`b/路徑` 標頭），不要手寫 hunk 行數。依序執行：
 
-pre-commit hook 失敗，把原始輸出貼給使用者並停下來修，不要用 `--no-verify` 繞過。
+  ```bash
+  git apply --cached --check <patch檔>
+  git apply --cached <patch檔>
+  ```
 
-commit 完跑 `git log -1 --stat` 回報結果。使用者明講之前不要 push。
+  前一個命令成功才執行下一個；每次提交後，下一份 patch 都以更新後的 index 為基準。
+- 每個 commit 前檢查 `git diff --cached`，確認僅含本次核准內容；不能只核對檔名。
+- 訊息以 UTF-8 寫入暫存檔，再執行 `git commit -F <訊息檔>`，避免跨 shell 的中文與多行引號問題。
+
+### 暫存檔與失敗處理
+
+訊息檔與 patch 一律放在 repository 外的系統暫存目錄，為本次執行建立獨立子目錄（例如 Python `tempfile.TemporaryDirectory`）。成功或失敗都清理自己建立的暫存檔，不在專案根目錄留下 scratch 檔，也不刪除使用者的檔案。
+
+patch 格式錯誤時，由主代理修正並重新執行 `--check`；不要因此重新派工或清空 index。若原因是內容已變動或核准範圍不明，停止並詢問使用者。
+
+pre-commit hook 失敗，把原始輸出貼給使用者並停止提交，待修正後再試，不要用 `--no-verify` 繞過。
+
+完成後跑 `git log -1 --stat` 與 `git status --short`，回報建立的 commit 與剩餘變更。使用者明講之前不要 push。
 
 ## 訊息格式
 
