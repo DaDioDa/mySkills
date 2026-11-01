@@ -11,7 +11,8 @@ skills/
 ├── how/             # 解釋程式碼架構與運作流程（源自 cursor/plugins pstack）
 ├── latex-slides/    # LaTeX 簡報製作
 ├── recall/          # 從 git 與 Claude Code／Codex／Pi 對話紀錄產出專案近況簡報（改寫自 cursor/plugins pstack）
-└── spec-foreman/    # 規格導向的多 agent TDD 與 review 流程
+├── spec-foreman/    # 規格導向的多 agent TDD 與 review 流程
+└── unslop/          # 去除文字中的 AI 腔（源自 cursor/plugins pstack）
 
 tools/
 └── PiStatusLine/    # Pi status line 工具與安裝說明
