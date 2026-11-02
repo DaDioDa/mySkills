@@ -16,15 +16,16 @@ GAP='   '                 # spacing between segments
 SEP='│'                   # marks the start of the folder/branch group
                           # (swap for '|' if your terminal renders this wrong)
 
-C_MODEL=$'\033[1;97m'     # model - effort  : bright white, bold
-C_CTX=$'\033[96m'         # context bar     : bright cyan
-C_5H=$'\033[93m'          # 5h credit bar   : bright yellow
-C_7D=$'\033[94m'          # 7d credit bar   : bright blue
-C_TPS=$'\033[32m'         # tok/s (fresh)   : green; stale value uses C_SEP grey
-C_RESET_IN=$'\033[33m'    # reset countdown : yellow
-C_SEP=$'\033[90m'         # separator       : grey
-C_DIR=$'\033[92m'         # folder name     : bright green
-C_BRANCH=$'\033[95m'      # branch          : bright magenta
+# 統一使用 Solarized 原色與固定 RGB，避免亮色 ANSI 色槽被映射成灰色。
+C_MODEL=$'\033[1;38;2;238;232;213m' # 模型與思考強度：base2 淺米色、粗體
+C_CTX=$'\033[38;2;42;161;152m'      # Context：cyan 青色
+C_5H=$'\033[38;2;181;137;0m'       # 五小時用量：yellow 黃色
+C_7D=$'\033[38;2;38;139;210m'      # 七日用量：blue 藍色
+C_TPS=$'\033[38;2;133;153;0m'      # 最新 tok/s：green 綠色；已讀值使用 C_SEP
+C_RESET_IN=$'\033[38;2;203;75;22m' # 重置倒數：orange 橘色
+C_SEP=$'\033[38;2;101;123;131m'    # 分隔線與次要資訊：base00 灰色
+C_DIR=$'\033[38;2;133;153;0m'      # 目錄：green 綠色
+C_BRANCH=$'\033[38;2;211;54;130m'  # 分支：magenta 洋紅色
 C_OFF=$'\033[0m'
 
 # ---------------------------------------------------------------- read input
