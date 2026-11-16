@@ -13,6 +13,7 @@ skills/
 ├── recall/          # 從 git 與 Claude Code／Codex／Pi 對話紀錄產出專案近況簡報（改寫自 cursor/plugins pstack）
 ├── slim/            # 把 Claude Code 的內建 skill 與工具關成白名單
 ├── spec-foreman/    # 規格導向的多 agent TDD 與 review 流程
+├── ui-design/       # 先畫靜態設計頁給使用者審閱再寫 UI 程式碼（改寫自 OpenCut）
 └── unslop/          # 去除文字中的 AI 腔（源自 cursor/plugins pstack）
 
 tools/
