@@ -60,3 +60,12 @@ Rule numbers are stable ids that other skills cite. A removed rule leaves a gap.
 31. **Prefer the plain word.** "utilize" and "leverage" become "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
 32. **Mannered prose.** Metaphor or flourish where a literal phrase exists: aphorisms ("wire it or delete it"), rhetorical fragments for effect, personified code ("the plan holds it"), figurative verbs ("rides along", "stands on"), stock framing phrases. "A dial worth turning" becomes "a parameter worth varying". Say what you mean. Rule 26 covers the metaphor nouns.
 33. **Over-compression.** Dropped articles, verbless fragments, symbol-speak, and abbreviations that make the reader decode instead of read. "Parser rejects bad date → exit 2, no write" becomes "The parser rejects a bad date, exits with code 2, and writes nothing." Write whole sentences with their articles and verbs, and spell out arrows and abbreviations.
+
+### 中文
+
+只套用在中文文字。這幾個句型都是先講「不是什麼」，再講或根本不講「是什麼」。修法一律是直接寫出肯定的事實。如果否定的那一半是在回應前文真的出現過的說法（例如審查意見、使用者的猜測），可以保留。
+
+34. **「不是 X，而是 Y」。** 先立一個沒人主張的 X 再推翻它，製造轉折感。直接寫 Y。「這不是效能問題，而是設計問題」改成「這是設計問題，每次請求都重建快取」。同類變體「並非 X，而是 Y」「與其說 X，不如說 Y」照同樣方式處理。英文的對應句型見規則 9。
+35. **「不能證明」。** 「這個結果不能證明 X」只說了證據沒顯示什麼。改寫成證據顯示了什麼，以及還缺哪個證據：「測試在 3 台機器上通過，還沒在 ARM 上跑過」。
+36. **「不代表」。** 「X 不代表 Y」是在預防讀者根本不會有的誤解。讀者不會從 X 推出 Y，就刪掉整句。讀者確實可能誤會，就寫出 X 和 Y 的實際關係：「延遲下降 20%，吞吐量沒有變」。
+37. **「不能斷言」。** 「目前還不能斷言 X」是空洞的保留。寫出已知什麼、未知什麼、要怎麼確認：「錯誤只在 Windows 出現，還不確定是否和路徑分隔符有關，下一步用 WSL 重跑」。規則 24 處理英文的過度保留。
