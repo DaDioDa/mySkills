@@ -92,8 +92,25 @@ commentary, which views belong together, and which views are meant to be compare
 - Keep text contrast readable (WCAG AA as the baseline), and do not rely on colour alone
   to convey state.
 
+## UI text
+
+All text on a design page goes through the unslop rules: text inside mock-ups (labels,
+buttons, headings, empty states, error messages, placeholder content) and the page's own
+titles, descriptions and margin notes.
+
+- Read `../unslop/SKILL.md` (the `unslop` skill next to this one) before writing any
+  text, and apply its rules while writing, not only as a later pass. The unslop skill
+  is user-invoked only, so read the file instead of calling it as a skill. If the file
+  is missing, tell the user and continue without it.
+- Its Chinese rules (34 to 37) apply to Chinese UI text.
+- Short UI labels such as buttons, tabs and column headers may stay as single words or
+  short phrases. Rule 33 (over-compression) applies to sentences, such as descriptions,
+  hints and error messages.
+
 ## Review
 
+- Before reporting, reread every piece of text on the page against the unslop rules and
+  fix what you find.
 - After building, check the rendered page visually (for example a headless Chrome
   screenshot of the HTML) before reporting. If the environment cannot take a screenshot,
   say clearly in your report that you did not check it visually.
@@ -104,7 +121,8 @@ commentary, which views belong together, and which views are meant to be compare
 
 - Start application code only after the user approves the design. When implementing,
   reuse the theme values and component structure from the design pages; do not invent
-  new colours or spacing.
+  new colours or spacing. Copy the UI text from the design, and write any new UI text
+  under the same unslop rules.
 - When the implementation has to differ from the design (for example a technical
   limit), update the design page or tell the user first; do not let the two drift apart
   silently.
