@@ -2,7 +2,7 @@
 name: spec-foreman
 description: 當工頭，透過 Herdr 派指定模型以 TDD 完成 tickets，可並行就並行；一次完整 review、修正後交人類驗收。
 disable-model-invocation: true
-compatibility: 需要 Herdr-managed pane、Git worktrees、可用的 coding-agent CLI 與 tdd skill。
+compatibility: 需要 Herdr-managed pane、Git worktrees、可用的 coding-agent CLI、tdd skill 與 mattpocock-skills 的 code-review skill。
 ---
 
 # Spec Foreman
@@ -33,7 +33,7 @@ Worker 首次交件前按 [testing](references/testing.md#交件前行為覆蓋�
 
 ## 3. 一次 review，修正後交人類
 
-讀 [review-loop.md](references/review-loop.md)。派一個全新唯讀 [reviewer](roles/reviewer.md)，審 baseline 到完整整合 HEAD，同時涵蓋 Spec／Standards。
+讀 [review-loop.md](references/review-loop.md)。派一個全新唯讀 [reviewer](roles/reviewer.md)，照 code-review skill 審 baseline 到完整整合 HEAD，同時涵蓋 Spec／Standards。
 
 有阻塞問題就派 [fixer](roles/fixer.md) 修正；整合後驗證修正與完整套件。修正後不自動再做完整或聚焦 code review；把 review 原版本、修正與未再次 review 的限制如實交人類。
 
@@ -45,6 +45,6 @@ Worker 首次交件前按 [testing](references/testing.md#交件前行為覆蓋�
 
 - stdout 只印短摘要；完整測試輸出留檔，失敗才讀細節。正常進度不複製完整 sessions 或反覆讀大份 state。
 - 使用 event／wait 回收，timeout 不等於失敗，done 不等於交件；不重複派同一任務。
-- Main 管理整合分支／state；workers 修改產品與測試，只管理自己的分支，不再派 agents。
+- Main 管理整合分支／state；workers 修改產品與測試，只管理自己的分支，不再派 agents。Reviewer 可用所在 CLI 內建的唯讀 sub-agents 平行審兩軸。
 - 本流程授權本機 commits／整合與獨立 worktrees；push、PR、主分支合併、權限批准另問。不 stash、reset、clean 或提交使用者既有修改。
 - 流程檔放系統暫存目錄；人類接受後依 [state 清理規則](references/state.md#清理) 刪除本 run 暫存。共用專案測試保留在 Git，分支／worktrees 不隨暫存一起刪除。

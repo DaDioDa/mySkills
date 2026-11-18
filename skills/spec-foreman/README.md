@@ -24,7 +24,7 @@ pi --skill ./skills/spec-foreman
   → Main 串行 fast-forward（同 HEAD 回歸不重跑）
   → 同產品／接縫串行下一票：沿用 worker／worktree／branch，compact 成功後接新 brief
   → 所有票完成、完整套件通過
-  → 一次完整 Spec + Standards review（預設一位 reviewer）
+  → 一次完整 Spec + Standards review（預設一位 reviewer，照 mattpocock-skills 的 code-review skill）
   → 修阻塞問題、驗證修正、完整套件通過
   → human validation（不再自動 code review）
   → 人類接受精確 HEAD，清理本 run 暫存

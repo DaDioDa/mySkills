@@ -24,6 +24,8 @@
 | Timeout／done 無結果／provider 額度 | 核對 live／短結果／Git，不重送、不當成功 |
 | 尚有未整合票 | 不提前 code review，不把未做票當 finding |
 | 全票完成 | 精確 HEAD full，通過後一次完整 Spec + Standards review |
+| 派 reviewer | brief 給 code-review skill 路徑與 baseline SHA；reviewer 照 skill 兩軸審，不問 fixed point、不查 issue tracker，報告兩軸分開 |
+| 找不到 code-review skill | 開工前問使用者，不改用自訂 review 流程 |
 | Review 有 blocking findings | 修正、相關測試／回歸、最後 full，直接交人類；不第二次 code review |
 | Advisory／需求爭議 | 主觀重構不自動修；真正需求／風險決策交人類 |
 | 無法完整 review／修復無進展 | 保留成果與具體阻塞，不無限開 reviewers／fixers |

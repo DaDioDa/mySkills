@@ -100,18 +100,31 @@ class DocumentTests(unittest.TestCase):
             with self.subTest(role=role):
                 self.assertIn("不用提問選單", text)
 
-    def test_blocking_defined_by_evidence_not_likelihood(self):
+    def test_main_classifies_blocking_from_code_review_axes(self):
         reviewer = (ROOT / "roles/reviewer.md").read_text(encoding="utf-8")
-        for phrase in ("Blocking 的定義", "都不能拿來降級", "驗收條件對照"):
-            self.assertIn(phrase, reviewer)
+        self.assertIn("驗收條件對照", reviewer)
+        self.assertIn("由 Main 決定", reviewer)
+        self.assertNotIn("Blocking 的定義", reviewer)
         template = (ROOT / "templates/review.md").read_text(encoding="utf-8")
-        for phrase in ("## 驗收條件對照", "不符合的一定要有對應 blocking finding", "發生機率與影響"):
+        for phrase in ("## 驗收條件對照", "不符合的一定要有對應 finding", "Hard violations", "Judgement calls"):
             self.assertIn(phrase, template)
         loop = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")
-        for phrase in ("不因機率低或影響小降級", "理由記入 state", "列在驗收包"):
+        for phrase in ("hard violation", "judgement call", "理由記入 state", "列在驗收包"):
             self.assertIn(phrase, loop)
         human = (ROOT / "templates/human-validation.md").read_text(encoding="utf-8")
         self.assertIn("降成 advisory 的 findings 與理由", human)
+
+    def test_reviewer_uses_code_review_skill(self):
+        reviewer = (ROOT / "roles/reviewer.md").read_text(encoding="utf-8")
+        for phrase in ("code-review skill", "baseline SHA", "不查 issue tracker", "不合併、不重排"):
+            self.assertIn(phrase, reviewer)
+        self.assertIn("code-review skill", (ROOT / "references/startup.md").read_text(encoding="utf-8"))
+        self.assertIn("code-review skill", (ROOT / "templates/handoff.md").read_text(encoding="utf-8"))
+        template = (ROOT / "templates/review.md").read_text(encoding="utf-8")
+        self.assertIn("## Standards", template)
+        self.assertIn("## Spec", template)
+        state = json.loads((ROOT / "templates/state.json").read_text(encoding="utf-8"))
+        self.assertIn("code_review_skill_path", state["review"])
 
     def test_no_automatic_post_fix_review(self):
         text = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")

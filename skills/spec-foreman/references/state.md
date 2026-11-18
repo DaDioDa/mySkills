@@ -19,7 +19,7 @@ Main 是 state 唯一寫入者，使用 UTF-8、temp file + 同目錄 rename 更
 - 測試契約：已確認的邊界與來源、tdd 路徑、related／regression／full 的命令與 cwd。
 - Tickets：ID、快照中的來源位置、depends_on、shared_resources、status、dispatch ID、integrated SHA。
 - Dispatches：ID、ticket／role、brief／result path、pane／agent／session、branch／worktree、input／output SHA、requested／observed 配置與來源、writer stopped。串行接票的新 dispatch 加 `reuse_from_dispatch_id` 與本次成功的 `compaction_source` 指標（session／entry ID 或原生事件）；其餘 dispatch 省略。
-- Review：原 review HEAD、report、findings（Main 降級的要附理由）、fix SHAs；不保留多輪 ledger。
+- Review：code-review skill 路徑、原 review HEAD、report、findings（Main 降級的要附理由）、fix SHAs；不保留多輪 ledger。
 - Human：驗收 HEAD、明確決策與回覆來源；created_resources 是 cleanup ownership 的依據。
 
 只在狀態轉換更新；不把驗收條件、commands 或 logs 複製到每個欄位。Result 中已有細節就留路徑。`last_verified_head_sha` 與 candidate 不同時，不宣稱目前版本驗證通過。

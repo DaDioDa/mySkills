@@ -2,7 +2,7 @@
 
 ## 完整 review 只做一次
 
-所有票 integrated、full 通過、writers 停止後，固定 `review_head_sha`。派一個全新唯讀 reviewer，同時檢查 Spec 與 Standards；若使用者明確要求分軸 workers 才分開，仍算同一次完整 review。
+所有票 integrated、full 通過、writers 停止後，固定 `review_head_sha`。派一個全新唯讀 reviewer，照 code-review skill 同時檢查 Spec 與 Standards，fixed point 是 `baseline_sha`；若使用者明確要求分軸 workers 才分開，仍算同一次完整 review。
 
 範圍是 `baseline_sha → review_head_sha` 完整 diff、相關完整檔案、整份 spec／tickets 與適用 repo 指引；不能只看最後一票。角色使用 [reviewer](../roles/reviewer.md)，報告用 [review](../templates/review.md)。
 
@@ -10,7 +10,7 @@
 
 ## 只修阻塞問題
 
-Main 合併同根因 findings。分類照 [reviewer](../roles/reviewer.md) 的 blocking 定義：有證據違反驗收條件、spec、ADR 或硬性規則就是 blocking，不因機率低或影響小降級；主觀建議留給人類，不擴張重構。收件時核對驗收條件對照：有缺漏，或「不符合」卻沒有 finding，請同一 reviewer 補齊。
+Main 合併同根因 findings，依 code-review skill 的分類決定 blocking：Standards 的 hard violation，以及 Spec 的缺漏／部分實作與實作錯誤是 blocking；Standards 的 judgement call（含 smell baseline）與 Spec 的範圍外行為是 advisory，留給人類，不擴張重構。收件時核對驗收條件對照：有缺漏，或「不符合」卻沒有 finding，請同一 reviewer 補齊。
 
 Reviewer 漏列的違反，Main 升為 blocking。Main 認為 reviewer 判錯（例如證據讀錯程式）時可以降成 advisory，但要把理由記入 state，並列在驗收包讓使用者看到。
 
