@@ -17,6 +17,7 @@
     "confirmed_seams": [],
     "confirmation_source": null,
     "tdd_skill_path": null,
+    "commit_skill_path": null,
     "shared_test_location": null,
     "related": [],
     "regression": [],
@@ -25,7 +26,7 @@
   "limits": { "max_active_workers": 2, "max_full_reviews": 1, "wait_timeout_ms": 120000 },
   "tickets": [],
   "dispatches": [],
-  "review": { "code_review_skill_path": null, "head_sha": null, "status": "not-started", "report_paths": [], "findings": [], "fix_shas": [] },
+  "review": { "code_review_skill_path": null, "head_sha": null, "status": "not-started", "report_paths": [], "repo_report_path": null, "report_commit_sha": null, "findings": [], "fix_shas": [] },
   "human_validation": { "head_sha": null, "decision": null, "accepted_head_sha": null, "response_reference": null },
   "blockers": [],
   "created_resources": []

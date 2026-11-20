@@ -12,12 +12,12 @@
 ## 自動化與 review
 
 - Final full：tested HEAD、命令、實際結果摘要:
-- 唯一完整 review 的原 HEAD／結果:
+- 唯一完整 review 的原 HEAD／結果／repo 內報告路徑與 commit:
 - 之後的 finding → fix commit／相關測試摘要:
 - 未解阻塞（必須無，或有使用者明確豁免）／advisory:
 - Main 從 blocking 降成 advisory 的 findings 與理由（沒有就寫無）:
 - 若有修正：明說「修正已通過測試，未再次 code review」。
-- 本 run 暫存目錄：...；接受後將刪除，只保留產品測試、commits／branches／worktrees。
+- 本 run 暫存目錄：...；接受後將刪除，只保留產品測試、`docs/reviews/` 報告、commits／branches／worktrees。
 
 ## 請決定
 

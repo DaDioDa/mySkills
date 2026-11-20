@@ -19,7 +19,7 @@ Main 是 state 唯一寫入者，使用 UTF-8、temp file + 同目錄 rename 更
 - 測試契約：已確認的邊界與來源、tdd 路徑、related／regression／full 的命令與 cwd。
 - Tickets：ID、快照中的來源位置、depends_on、shared_resources、status、dispatch ID、integrated SHA。
 - Dispatches：ID、ticket／role、brief／result path、pane／agent／session、branch／worktree、input／output SHA、requested／observed 配置與來源、writer stopped。串行接票的新 dispatch 加 `reuse_from_dispatch_id` 與本次成功的 `compaction_source` 指標（session／entry ID 或原生事件）；其餘 dispatch 省略。
-- Review：code-review skill 路徑、原 review HEAD、report、findings（Main 降級的要附理由）、fix SHAs；不保留多輪 ledger。
+- Review：code-review skill 路徑、原 review HEAD、report、repo 內報告路徑與 report commit SHA、findings（Main 降級的要附理由）、fix SHAs；不保留多輪 ledger。
 - Human：驗收 HEAD、明確決策與回覆來源；created_resources 是 cleanup ownership 的依據。
 
 只在狀態轉換更新；不把驗收條件、commands 或 logs 複製到每個欄位。Result 中已有細節就留路徑。`last_verified_head_sha` 與 candidate 不同時，不宣稱目前版本驗證通過。
@@ -37,6 +37,6 @@ Main 是 state 唯一寫入者，使用 UTF-8、temp file + 同目錄 rename 更
 1. 先向使用者輸出接受的 branch／HEAD、測試與 review／修正摘要，作為不依賴 temp 的完成回覆；將明確決策寫入 state。
 2. 檢查目標是本 run 建立的系統 temp 直屬 `spec-foreman-*` 目錄，marker／state 的 run、repo 與絕對路徑一致；accepted HEAD 等於當前 integration HEAD。
 3. 確認該目錄無 worktree／repo、使用者資料、symlink／junction 或外部指向。使用 [cleanup.py](../scripts/cleanup.py)：`python <skill-dir>/scripts/cleanup.py <exact-run-dir>` 先 dry-run，通過後同命令加 `--delete`；只刪這個目錄，不用 wildcard 刪其他 runs。
-4. 刪除失敗如實回報路徑，不改動產品、不反覆嘗試破壞性清理。Git branches／worktrees、產品測試及本 run 以外的 sessions 永遠不在此清理範圍；刪那些需另問。
+4. 刪除失敗如實回報路徑，不改動產品、不反覆嘗試破壞性清理。Git branches／worktrees、產品測試、`docs/reviews/` 內已提交的報告及本 run 以外的 sessions 永遠不在此清理範圍；刪那些需另問。
 
 本機舊 runs（例如原 `.git/spec-foreman/`）不遷移或自動清除。這是新 run 的工作規則。

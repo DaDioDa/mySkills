@@ -126,6 +126,34 @@ class DocumentTests(unittest.TestCase):
         state = json.loads((ROOT / "templates/state.json").read_text(encoding="utf-8"))
         self.assertIn("code_review_skill_path", state["review"])
 
+    def test_workers_commit_with_commit_skill_format(self):
+        implementer = (ROOT / "roles/implementer.md").read_text(encoding="utf-8")
+        for phrase in ("commit skill", "**一個** atomic commit"):
+            self.assertIn(phrase, implementer)
+        fixer = (ROOT / "roles/fixer.md").read_text(encoding="utf-8")
+        for phrase in ("commit skill", "每個根因一個 atomic commit", "finding ID"):
+            self.assertIn(phrase, fixer)
+        self.assertIn("commit skill 絕對路徑", (ROOT / "templates/handoff.md").read_text(encoding="utf-8"))
+        state = json.loads((ROOT / "templates/state.json").read_text(encoding="utf-8"))
+        self.assertIn("commit_skill_path", state["test_contract"])
+        commit_skill = ROOT.parent / "commit/SKILL.md"
+        if commit_skill.is_file():
+            text = commit_skill.read_text(encoding="utf-8")
+            self.assertNotIn("disable-model-invocation", text)
+            for phrase in ("不停下來等使用者核准提案", "push、開 PR、合併主分支一律先問使用者"):
+                self.assertIn(phrase, text)
+
+    def test_review_report_persisted_in_repo(self):
+        loop = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")
+        for phrase in ("## 保存 review 報告", "docs/reviews/", "docs(review)",
+                       "incomplete 的報告不提交", "從這個 commit 起算"):
+            self.assertIn(phrase, loop)
+        state = json.loads((ROOT / "templates/state.json").read_text(encoding="utf-8"))
+        for key in ("repo_report_path", "report_commit_sha"):
+            self.assertIn(key, state["review"])
+        self.assertIn("docs/reviews/", (ROOT / "references/state.md").read_text(encoding="utf-8"))
+        self.assertIn("docs/reviews/", (ROOT / "templates/human-validation.md").read_text(encoding="utf-8"))
+
     def test_no_automatic_post_fix_review(self):
         text = (ROOT / "references/review-loop.md").read_text(encoding="utf-8")
         self.assertIn("不自動派第二次完整 reviewer，也不派聚焦 code reviewer", text)

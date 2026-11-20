@@ -6,6 +6,7 @@
 - Integration branch（worker 回交前讀最新 SHA）:
 - 目標、驗收條件位置、允许修改範圍／共享契約:
 - 共用測試契約／tdd skill 絕對路徑:
+- Implementer／fixer 才填：commit skill 絕對路徑:
 - Reviewer 才填：code-review skill 絕對路徑／fixed point（baseline SHA）／review HEAD:
 - 本票 related／必要 regression 選取（只列共用契約的差異）:
 - Result 絕對路徑／暫存 log 目錄:

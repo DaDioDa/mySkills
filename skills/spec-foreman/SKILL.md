@@ -2,7 +2,7 @@
 name: spec-foreman
 description: 當工頭，透過 Herdr 派指定模型以 TDD 完成 tickets，可並行就並行；一次完整 review、修正後交人類驗收。
 disable-model-invocation: true
-compatibility: 需要 Herdr-managed pane、Git worktrees、可用的 coding-agent CLI、tdd skill 與 mattpocock-skills 的 code-review skill。
+compatibility: 需要 Herdr-managed pane、Git worktrees、可用的 coding-agent CLI、tdd skill、commit skill 與 mattpocock-skills 的 code-review skill。
 ---
 
 # Spec Foreman
@@ -27,7 +27,7 @@ Spec／tickets 應先約定精簡測試契約；缺少時一次補齊並確認�
 
 Worker 在自己的 worktree 實作、測試，回交前自行同步最新整合 HEAD；無衝突自行測試，真正衝突才求助 Main。Main 串行 fast-forward，不另派無衝突 resolver。
 
-Worker 首次交件前按 [testing](references/testing.md#交件前行為覆蓋自查) 自查驗收條件與真正 assertions，缺漏先補共用測試。成功只回覆並保存短 [result](templates/result.md)；失敗／阻塞才寫詳細 handoff。Main 核對版本、範圍、測試結果，正常情況不稽核逐切片時間線、不追加補證文件。
+Worker 首次交件前按 [testing](references/testing.md#交件前行為覆蓋自查) 自查驗收條件與真正 assertions，缺漏先補共用測試，再照 commit skill 把本票提交成一個 atomic commit。成功只回覆並保存短 [result](templates/result.md)；失敗／阻塞才寫詳細 handoff。Main 核對版本、範圍、測試結果，正常情況不稽核逐切片時間線、不追加補證文件。
 
 **完成：** 每張票 integrated，整合版本通過完整套件，沒有 active writer 或未解阻塞。
 
@@ -35,7 +35,7 @@ Worker 首次交件前按 [testing](references/testing.md#交件前行為覆蓋�
 
 讀 [review-loop.md](references/review-loop.md)。派一個全新唯讀 [reviewer](roles/reviewer.md)，照 code-review skill 審 baseline 到完整整合 HEAD，同時涵蓋 Spec／Standards。
 
-有阻塞問題就派 [fixer](roles/fixer.md) 修正；整合後驗證修正與完整套件。修正後不自動再做完整或聚焦 code review；把 review 原版本、修正與未再次 review 的限制如實交人類。
+Review complete 後先把報告提交到 repo 的 `docs/reviews/`，留作日後找重複錯誤的證據。有阻塞問題就派 [fixer](roles/fixer.md) 修正，每個根因一個 commit 並標 finding ID；整合後驗證修正與完整套件。修正後不自動再做完整或聚焦 code review；把 review 原版本、修正與未再次 review 的限制如實交人類。
 
 使用 [human-validation](templates/human-validation.md) 提供啟動方式、驗收步驟、精確 HEAD、測試摘要與已知限制。
 

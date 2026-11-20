@@ -19,13 +19,15 @@ pi --skill ./skills/spec-foreman
 ```text
 一次確認需求／測試契約／配置
   → workers 依前置與共享修改風險並行 TDD（預設最多 2 位）
-  → worker 自行同步最新整合版本、測試、行為覆蓋自查
+  → worker 行為覆蓋自查，照 commit skill 把本票提交成一個 commit
+  → worker 自行同步最新整合版本、跑 regression
   → 無衝突短摘要；衝突／失敗才詳細 handoff 求助 Main
   → Main 串行 fast-forward（同 HEAD 回歸不重跑）
   → 同產品／接縫串行下一票：沿用 worker／worktree／branch，compact 成功後接新 brief
   → 所有票完成、完整套件通過
   → 一次完整 Spec + Standards review（預設一位 reviewer，照 mattpocock-skills 的 code-review skill）
-  → 修阻塞問題、驗證修正、完整套件通過
+  → review 報告提交到 repo 的 docs/reviews/
+  → 修阻塞問題（每個根因一個 commit，標 finding ID）、驗證修正、完整套件通過
   → human validation（不再自動 code review）
   → 人類接受精確 HEAD，清理本 run 暫存
 ```

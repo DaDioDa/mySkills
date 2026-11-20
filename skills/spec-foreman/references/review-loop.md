@@ -8,6 +8,16 @@
 
 必要範圍未讀就 incomplete，不把空 findings 當 pass；恢復同一 review 任務完成剩餘範圍，不另起反覆全面 review。Review 期間整合分支凍結；意外寫入立即停下查明，不能把舊報告當成新 HEAD 的 review。
 
+## 保存 review 報告
+
+Review complete 後、派 fixer 前，Main 把報告保存進 repo，供日後 `/correct` 等流程從 Git 找回錯誤證據：
+
+1. 複製到整合 worktree 的 `docs/reviews/<YYYY-MM-DD>-<integration branch，/ 換成 ->.md`，報告內的 temp 路徑換成 spec 原始來源路徑。
+2. 照 commit skill 在整合分支提交一個 `docs(review)` commit。這是 Main 唯一直接寫入整合分支的內容；其餘仍只 fast-forward。
+3. 記錄 repo 路徑與 report commit SHA 到 state。Fixers 的 input SHA 從這個 commit 起算。
+
+Reviewer 補齊驗收條件對照後才保存；incomplete 的報告不提交。
+
 ## 只修阻塞問題
 
 Main 合併同根因 findings，依 code-review skill 的分類決定 blocking：Standards 的 hard violation，以及 Spec 的缺漏／部分實作與實作錯誤是 blocking；Standards 的 judgement call（含 smell baseline）與 Spec 的範圍外行為是 advisory，留給人類，不擴張重構。收件時核對驗收條件對照：有缺漏，或「不符合」卻沒有 finding，請同一 reviewer 補齊。

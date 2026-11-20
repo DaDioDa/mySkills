@@ -6,7 +6,9 @@
 - 純標準／重構：跑既有 related／regression，red 可 N/A 並簡述理由，不故意破壞產品造 red。
 - 真正衝突：保留原任務提交與最新 integration HEAD。沿用原 worker 分支或以原 output 建新分支，合入 target，依明確需求解決。回交 output 必須包含雙方提交；語意不明先問 Main，不任選一邊覆蓋。
 
-修正每個 blocking finding，跑相關測試，回交前自行同步最新 integration SHA 並跑必要 regression。成果 commit、clean、停止寫入後，發布短 [result](../templates/result.md)，附 finding → fix／test 簡短對照。失敗才寫詳細 handoff。
+修正每個 blocking finding，跑相關測試。照 brief 給的 commit skill 提交，**每個根因一個 atomic commit**，標題或摘要寫出 finding ID（例如 `S2`、`P1`）。
+
+回交前自行同步最新 integration SHA 並跑必要 regression。Clean、停止寫入後，發布短 [result](../templates/result.md)，附 finding → fix commit／test 簡短對照。失敗才寫詳細 handoff。
 
 如果 finding 有具體反證，交 Main 澄清；需求／風險豁免由使用者決定，不自行忽略。要問 Main 時寫失敗 handoff、停止寫入；不用提問選單或任何等人在本視窗回答的工具，Main 看不到。
 
