@@ -7,6 +7,7 @@
 ```text
 skills/
 ├── commit/          # Git 提交流程
+├── correct/         # 把 agent 反覆犯的錯改成做不出來（架構、型別、lint、測試優先，規則最後）
 ├── cp-master/       # 高 CP 值選項調查
 ├── how/             # 解釋程式碼架構與運作流程（源自 cursor/plugins pstack）
 ├── latex-slides/    # LaTeX 簡報製作
